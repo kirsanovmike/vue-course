@@ -1,1 +1,0 @@
-import{v as t}from"./index.030c5477.js";import{o as s,c as o,i as a,u as c,a as e}from"./vendor.bdbab47a.js";const r={class:"about"},n=e("h1",null,"About",-1),p={setup(u){return(i,l)=>(s(),o("div",r,[n,a(e("textarea",null,null,512),[[c(t)]])]))}};export{p as default};
