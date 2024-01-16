@@ -1,33 +1,29 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import ModalsView from '../views/ModalsView.vue'
-import PostsView from '../views/PostsView.vue'
-import PostDetailView from '../views/PostDetailView.vue'
+import {createRouter, createWebHistory} from 'vue-router'
+import ViewNotes from '@/views/ViewNotes.vue'
+import ViewEditNote from '@/views/ViewEditNote.vue'
+import ViewStats from '@/views/ViewStats.vue'
+
+const routes = [
+  {
+    path: '/vue-course/',
+    name: 'notes',
+    component: ViewNotes
+  },
+  {
+    path: '/vue-course/editNote/:id',
+    name: 'edit-note',
+    component: ViewEditNote
+  },
+  {
+    path: '/vue-course/stats',
+    name: 'stats',
+    component: ViewStats
+  }
+]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/modals',
-      name: 'modals',
-      component: ModalsView
-    },
-    {
-      path: '/posts',
-      name: 'posts',
-      component: PostsView
-    },
-    {
-      path: '/postDetail/:id',
-      name: 'postDetail',
-      component: PostDetailView
-    }
-  ]
+  history: createWebHistory(),
+  routes
 })
 
 export default router

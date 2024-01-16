@@ -1,0 +1,83 @@
+<template>
+  <div
+    :class="`has-background-${ bgColor }-dark`"
+    class="card p-4 mb-5"
+  >
+    <label
+      v-if="label"
+      class="label has-text-white"
+    >
+      {{ label }}
+    </label>
+
+    <div class="field">
+      <div class="control">
+        <textarea
+          ref="textareaRef"
+          v-model="modelValue"
+          :placeholder="placeholder"
+          class="textarea"
+          @input="$emit('update:modelValue', modelValue)"
+        />
+      </div>
+    </div>
+
+    <div class="field is-grouped is-grouped-right">
+      <div class="control">
+        <slot name="buttons"/>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+
+/*
+  imports
+*/
+
+import {ref} from 'vue'
+
+/*
+  props
+*/
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true
+  },
+  bgColor: {
+    type: String,
+    default: 'success'
+  },
+  placeholder: {
+    type: String,
+    default: 'Type something...'
+  },
+  label: {
+    type: String
+  }
+})
+
+/*
+  emits
+*/
+
+const emit = defineEmits(['update:modelValue'])
+
+/*
+  focus textarea
+*/
+
+const textareaRef = ref(null)
+
+const focusTextarea = () => {
+  textareaRef.value.focus()
+}
+
+defineExpose({
+  focusTextarea
+})
+
+</script>
