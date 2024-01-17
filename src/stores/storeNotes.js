@@ -1,38 +1,59 @@
 import {defineStore} from 'pinia'
+import {db} from "@/js/firebase"
+import {collection, deleteDoc, doc, onSnapshot, setDoc, updateDoc, query, orderBy} from "firebase/firestore";
 
+const q = query(collection(db, "notes"), orderBy("id", "desc"));
 export const useStoreNotes = defineStore('storeNotes', {
   state: () => {
     return {
-      notes: [
-        {
-          id: 'id1',
-          content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem ipsa commodi sint ut ullam culpa nulla molestiae sunt quia qui maxime.'
-        },
-        {
-          id: 'id2',
-          content: 'This is a shorter note! Woo!'
-        }
-      ]
+      notes: []
     }
   },
   actions: {
-    addNote(newNoteContent) {
-      let currentDate = Date.now(),
+    async getNotes() {
+      try {
+        // const data = await getDocs(collection(db, "notes"));
+        // data.forEach((doc) => {
+        //   this.notes.push({
+        //     id: doc.id,
+        //     content: doc.data().content
+        //   })
+        // });
+
+        onSnapshot(q, (data) => {
+          this.notes = []
+          data.forEach((doc) => {
+            this.notes.push({
+              id: doc.id,
+              content: doc.data().content
+            })
+          });
+        })
+      } catch (e) {
+        console.error("Error fetching notes: ", e);
+      }
+    },
+    async addNote(content) {
+      let currentDate = new Date().getTime(),
         id = currentDate.toString()
 
-      let note = {
+      await setDoc(doc(db, "notes", id), {
         id,
-        content: newNoteContent
-      }
-
-      this.notes.unshift(note)
+        content
+      });
     },
-    deleteNote(idToDelete) {
-      this.notes = this.notes.filter(note => note.id !== idToDelete)
+    async deleteNote(idToDelete) {
+      await deleteDoc(doc(db, "notes", idToDelete))
     },
-    updateNote(id, content) {
+    async updateNote(id, content) {
       let index = this.notes.findIndex(note => note.id === id)
       this.notes[index].content = content
+
+      const noteRef = doc(db, "notes", id);
+
+      await updateDoc(noteRef, {
+        content
+      });
     }
   },
   getters: {

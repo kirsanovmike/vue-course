@@ -5,6 +5,9 @@
     <div class="card-content">
       <div class="content">
         {{ note.content }}
+        <div class="has-text-left has-text-grey-light mt-2">
+          <small>{{ formatDate(note.id) }}</small>
+        </div>
         <div class="has-text-right has-text-grey-light mt-2">
           <small>{{ characterLength }}</small>
         </div>
@@ -36,6 +39,7 @@
 
 import {computed} from 'vue'
 import {useStoreNotes} from '@/stores/storeNotes'
+import {useDateFormat} from "@vueuse/core";
 
 /*
   props
@@ -63,5 +67,9 @@ const characterLength = computed(() => {
   let description = length > 1 ? 'characters' : 'character'
   return `${length} ${description}`
 })
+
+/* format date */
+
+const formatDate = (dateInMs) => useDateFormat(new Date(+dateInMs), "DD.MM.YYYY HH:mm:ss").value
 
 </script>

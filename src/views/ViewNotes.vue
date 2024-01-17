@@ -5,6 +5,7 @@
       ref="addEditNoteRef"
       v-model="newNote"
       placeholder="Add a new note"
+      @keydown.enter.exact.prevent="addNote"
     >
       <template #buttons>
         <button
@@ -36,6 +37,7 @@ import {onMounted, ref} from 'vue'
 import Note from '@/components/Notes/Note.vue'
 import AddEditNote from '@/components/Notes/AddEditNote.vue'
 import {useStoreNotes} from '@/stores/storeNotes'
+import {useWatchCaracters} from "@/use/useWatchCaracters";
 
 /*
   store
@@ -43,12 +45,8 @@ import {useStoreNotes} from '@/stores/storeNotes'
 
 const storeNotes = useStoreNotes()
 
-/*
-  mounted
-*/
-
-onMounted(() => {
-  addEditNoteRef.value.focusTextarea();
+onMounted(async () => {
+  await storeNotes.getNotes()
 })
 
 /*
@@ -59,9 +57,11 @@ const newNote = ref('')
 const addEditNoteRef = ref(null)
 
 const addNote = () => {
-  storeNotes.addNote(newNote.value)
-  newNote.value = ''
-  addEditNoteRef.value.focusTextarea()
+  if (newNote.value !== '' && newNote.value != null) {
+    storeNotes.addNote(newNote.value)
+    newNote.value = ''
+  }
 }
 
+useWatchCaracters(newNote, 30)
 </script>

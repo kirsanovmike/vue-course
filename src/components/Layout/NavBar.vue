@@ -5,7 +5,7 @@
     role="navigation"
   >
     <div class="container is-max-desktop px-2">
-      <div class="navbar-brand">
+      <div ref="navTitleRef" class="navbar-brand">
         <div class="navbar-item is-size-4 is-family-monospace">
           Noteballs
         </div>
@@ -27,6 +27,7 @@
 
       <div
         id="navbarBasicExample"
+        ref="navbarRef"
         :class="{ 'is-active' : showMobileNav }"
         class="navbar-menu"
       >
@@ -59,12 +60,18 @@
 */
 
 import {ref} from 'vue'
+import {onClickOutside} from "@vueuse/core";
+
 
 /*
   mobile nav
 */
 
 const showMobileNav = ref(false)
+const navbarRef = ref(null)
+const navTitleRef = ref(null)
+
+onClickOutside(navbarRef, event => showMobileNav.value = false, {ignore: [navTitleRef]})
 
 </script>
 
