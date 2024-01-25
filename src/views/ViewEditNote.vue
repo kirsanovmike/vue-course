@@ -64,7 +64,7 @@ noteContent.value = storeNotes.getNoteContent(route.params.id)
 
 const handleSaveClicked = () => {
   storeNotes.updateNote(route.params.id, noteContent.value)
-  router.push('/')
+  router.replace('/')
 }
 
 </script>
