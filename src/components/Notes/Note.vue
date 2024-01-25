@@ -15,7 +15,7 @@
     </div>
     <footer class="card-footer">
       <RouterLink
-        :to="`/vue-course/editNote/${ note.id }`"
+        :to="`/editNote/${ note.id }`"
         class="card-footer-item"
         href="#"
       >

@@ -23,6 +23,9 @@
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
+        <button v-if="storeAuth.user.id" class="button is-primary" @click.prevent="logout">Log out
+          {{ storeAuth.user.email }}
+        </button>
       </div>
 
       <div
@@ -33,17 +36,19 @@
       >
         <div class="navbar-end">
           <RouterLink
+            v-if="storeAuth.user.id"
             active-class="is-active"
             class="navbar-item"
-            to="/vue-course/"
+            to="/"
             @click="showMobileNav = false"
           >
             Notes
           </RouterLink>
           <RouterLink
+            v-if="storeAuth.user.id"
             active-class="is-active"
             class="navbar-item"
-            to="/vue-course/stats"
+            to="/stats"
             @click="showMobileNav = false"
           >
             Stats
@@ -61,7 +66,9 @@
 
 import {ref} from 'vue'
 import {onClickOutside} from "@vueuse/core";
+import {useStoreAuth} from "@/stores/storeAuth";
 
+const storeAuth = useStoreAuth()
 
 /*
   mobile nav
@@ -73,6 +80,11 @@ const navTitleRef = ref(null)
 
 onClickOutside(navbarRef, event => showMobileNav.value = false, {ignore: [navTitleRef]})
 
+
+const logout = () => {
+  showMobileNav.value = false
+  storeAuth.logOutUser()
+}
 </script>
 
 <style>
