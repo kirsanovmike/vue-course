@@ -9,7 +9,7 @@
     >
       <template #buttons>
         <button
-          :disabled="!newNote"
+          :disabled="newNote === ''"
           class="button is-link has-background-success"
           @click="addNote"
         >
