@@ -37,6 +37,7 @@
 */
 
 import {vAutofocus} from "@/directives/vAutofocus";
+import {ref} from "vue";
 
 /*
   props
@@ -59,6 +60,8 @@ const props = defineProps({
     type: String
   }
 })
+
+const modelValue = ref(props.modelValue)
 
 /*
   emits
