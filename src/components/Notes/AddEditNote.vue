@@ -1,11 +1,11 @@
 <template>
   <div
-    :class="`has-background-${ bgColor }-dark`"
-    class="card p-4 mb-5"
+      :class="`has-background-${ bgColor }-dark`"
+      class="card p-4 mb-5"
   >
     <label
-      v-if="label"
-      class="label has-text-white"
+        v-if="label"
+        class="label has-text-white"
     >
       {{ label }}
     </label>
@@ -13,11 +13,11 @@
     <div class="field">
       <div class="control">
         <textarea
-          v-model="modelValue"
-          v-autofocus
-          :placeholder="placeholder"
-          class="textarea"
-          @input="$emit('update:modelValue', modelValue)"
+            v-autofocus
+            :placeholder="placeholder"
+            :value="props.modelValue"
+            class="textarea"
+            @input="$emit('update:modelValue', $event.target.value)"
         />
       </div>
     </div>
@@ -37,7 +37,6 @@
 */
 
 import {vAutofocus} from "@/directives/vAutofocus";
-import {ref} from "vue";
 
 /*
   props
@@ -60,8 +59,6 @@ const props = defineProps({
     type: String
   }
 })
-
-const modelValue = ref(props.modelValue)
 
 /*
   emits

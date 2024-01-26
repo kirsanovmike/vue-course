@@ -2,16 +2,16 @@
   <div class="notes">
 
     <AddEditNote
-      ref="addEditNoteRef"
-      v-model="newNote"
-      placeholder="Add a new note"
-      @keydown.enter.exact.prevent="addNote"
+        ref="addEditNoteRef"
+        v-model="newNote"
+        placeholder="Add a new note"
+        @keydown.enter.exact.prevent="addNote"
     >
       <template #buttons>
-        <!--        :disabled="newNote === ''"-->
         <button
-          class="button is-link has-background-success"
-          @click="addNote"
+            :disabled="newNote === ''"
+            class="button is-link has-background-success"
+            @click="addNote"
         >
           Add New Note
         </button>
@@ -19,9 +19,9 @@
     </AddEditNote>
 
     <Note
-      v-for="note in storeNotes.notes"
-      :key="note.id"
-      :note="note"
+        v-for="note in storeNotes.notes"
+        :key="note.id"
+        :note="note"
     />
 
   </div>
