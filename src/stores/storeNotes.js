@@ -1,59 +1,68 @@
 import {defineStore} from 'pinia'
-import {db} from "@/js/firebase"
-import {collection, deleteDoc, doc, onSnapshot, setDoc, updateDoc, query, orderBy} from "firebase/firestore";
+import {
+  collection, onSnapshot,
+  doc, deleteDoc, updateDoc, addDoc,
+  query, orderBy
+} from 'firebase/firestore'
+import {db} from '@/js/firebase'
+import {useStoreAuth} from "@/stores/storeAuth";
 
-const q = query(collection(db, "notes"), orderBy("id", "desc"));
+let notesCollectionRef,
+  notesCollectionQuery,
+  getNoteSnapshot = null
+
 export const useStoreNotes = defineStore('storeNotes', {
   state: () => {
     return {
-      notes: []
+      notes: [],
+      notesLoaded: false
     }
   },
   actions: {
-    async getNotes() {
-      try {
-        // const data = await getDocs(collection(db, "notes"));
-        // data.forEach((doc) => {
-        //   this.notes.push({
-        //     id: doc.id,
-        //     content: doc.data().content
-        //   })
-        // });
+    init() {
+      const storeAuth = useStoreAuth()
 
-        onSnapshot(q, (data) => {
-          this.notes = []
-          data.forEach((doc) => {
-            this.notes.push({
-              id: doc.id,
-              content: doc.data().content
-            })
-          });
-        })
-      } catch (e) {
-        console.error("Error fetching notes: ", e);
-      }
+      notesCollectionRef = collection(db, 'users', storeAuth.user.id, "notes")
+      notesCollectionQuery = query(notesCollectionRef, orderBy('date', 'desc'))
+      this.getNotes()
     },
-    async addNote(content) {
-      let currentDate = new Date().getTime(),
-        id = currentDate.toString()
+    async getNotes() {
+      this.notesLoaded = false
 
-      await setDoc(doc(db, "notes", id), {
-        id,
-        content
-      });
+      getNoteSnapshot = onSnapshot(notesCollectionQuery, (querySnapshot) => {
+        let notes = []
+        querySnapshot.forEach((doc) => {
+          let note = {
+            id: doc.id,
+            content: doc.data().content,
+            date: doc.data().date
+          }
+          notes.push(note)
+        })
+        this.notes = notes
+        this.notesLoaded = true
+      })
+    },
+    async addNote(newNoteContent) {
+      let currentDate = new Date().getTime(),
+        date = currentDate.toString()
+
+      await addDoc(notesCollectionRef, {
+        content: newNoteContent,
+        date
+      })
     },
     async deleteNote(idToDelete) {
-      await deleteDoc(doc(db, "notes", idToDelete))
+      await deleteDoc(doc(notesCollectionRef, idToDelete))
     },
     async updateNote(id, content) {
-      let index = this.notes.findIndex(note => note.id === id)
-      this.notes[index].content = content
-
-      const noteRef = doc(db, "notes", id);
-
-      await updateDoc(noteRef, {
+      await updateDoc(doc(notesCollectionRef, id), {
         content
       });
+    },
+    clearNotes() {
+      this.notes = []
+      if (getNoteSnapshot) getNoteSnapshot() // unsubscribe from previous users
     }
   },
   getters: {

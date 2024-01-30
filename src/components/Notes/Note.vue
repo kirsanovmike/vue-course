@@ -6,7 +6,7 @@
       <div class="content">
         {{ note.content }}
         <div class="has-text-left has-text-grey-light mt-2">
-          <small>{{ formatDate(note.id) }}</small>
+          <small>{{ formatDate(note.date) }}</small>
         </div>
         <div class="has-text-right has-text-grey-light mt-2">
           <small>{{ characterLength }}</small>
