@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link href="/vue-course/favicon.ico" rel="icon"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Vue Composition API Basics</title>
+  <link href="/vue-course/manifest.json" rel="manifest">
+  <script type="module" crossorigin src="/vue-course/assets/index-PPrS3NJo.js"></script>
+  <link rel="stylesheet" crossorigin href="/vue-course/assets/index-oyfiEc-G.css">
+<link rel="manifest" href="/vue-course/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/vue-course/registerSW.js"></script></head>
+<body>
+<div id="app"></div>
+<div class="modals-container"></div>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/vue-app/sw.js")
+    });
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      // Update UI notify the user they can add to home screen
+      btnAdd.style.display = 'block';
+    });
+
+  }
+</script>
+</body>
+</html>
