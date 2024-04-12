@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vue Composition API Basics</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <div class="modals-container"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8"/>
+  <link href="/favicon.ico" rel="icon"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Vue Composition API Basics</title>
+  <link href="/manifest.json" rel="manifest">
+</head>
+<body>
+<div id="app"></div>
+<div class="modals-container"></div>
+<script src="/src/main.js" type="module"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/vue-app/sw.js")
+    });
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      // Update UI notify the user they can add to home screen
+      btnAdd.style.display = 'block';
+    });
+
+  }
+</script>
+</body>
 </html>
